@@ -1,4 +1,4 @@
-# Graphics-Project-Garden-Sim
+# Orchid
 Graphics Project.
 The user can pick seeds they want to plant, and click where they want to plant them.
 They also specify how long they want the plants to grow. They can then see the plants grow in 3d.
