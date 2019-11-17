@@ -1,0 +1,22 @@
+{
+  "name": "garden-sim",
+  "version": "0.1.0",
+  "description": "Graphics Project. The user can pick seeds they want to plant, and click where they want to plant them. They also specify how long they want the plants to grow. They can then see the plants grow in 3d using L-systems. The user can also move around the garden and see the plants growing in any angle.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Prasantacharya/Garden-Sim.git"
+  },
+  "author": "Prasant Acharya, Shane Boles",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Prasantacharya/Garden-Sim/issues"
+  },
+  "homepage": "https://github.com/Prasantacharya/Garden-Sim#readme",
+  "dependencies": {
+    "three": "^0.110.0"
+  }
+}
