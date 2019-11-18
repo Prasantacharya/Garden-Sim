@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Garden Sim</title>
+		<style>
+			body {margin:0;}
+		</style>
+
+		<script id="vertex-shader" type="x-shader/x-vertex">
+		precision mediump float;
+
+		void main(){
+			gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+		}
+		</script>
+
+		<script id="fragment-shader" type="x-shader/x-fragment">
+		precision mediump float;
+
+		void main(){
+			float scalar = -0.91;
+			float color = (gl_FragCoord.z + scalar)/(1.0+scalar);
+			gl_FragColor = vec4(color, color, color, 1.0);
+		}
+		</script>
+
+	</head>
+
+	<body>
+			<script type = "text/javascript" src="node_modules/three/build/three.js"></script>
+			<script type="text/javascript" src="testScripts/testCustomShaders.js"></script>
+	</body>
+</html>
