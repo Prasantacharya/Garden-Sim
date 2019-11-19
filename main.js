@@ -13,6 +13,16 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
+//camera controls init and config (lmb spin, rmb pan along ground, scroll zoom)
+//controls can be changed if needed.
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.20;
+controls.maxPolarAngle = Math.PI/2 - 0.1;
+controls.minDistance = 5;
+controls.maxDistance = 100;
+controls.zoomSpeed = 0.5;
+controls.panSpeed = 0.85;
 
 //setup of GroundPlane (ie a plane for ground...)
 //TODO: convert plane params from magic numbers to consts
@@ -66,19 +76,21 @@ var torusMaterial = new THREE.MeshPhongMaterial({
 });
 var torus = new THREE.Mesh(torusGeometry, torusMaterial);
 torus.castShadow = true;
+torus.receiveShadow = true;
 torus.translateY(8);
 scene.add(torus);
 
 //Camera parameters
-//TODO: compute camera positioning per-frame to move it around in the scene
 camera.position.z = 20;
 camera.position.y = 21;
 camera.position.x = 4;
 camera.lookAt(0,0,0);
 
 function render(){
-    //scene is static (for now), no need to requestAnimFrame
-    //requestAnimationFrame(render);
+    requestAnimationFrame(render);
+
+    //since the controls are dampened, this has to be called
+    controls.update();
 
     renderer.render(scene, camera);
 }
