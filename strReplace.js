@@ -12,14 +12,32 @@ var rules = {
 "B":"A"
 };
 // rules for special characters
-
+/*
+Generate rules:
+------------
+A : Stalk
+B : Leaf
+C : Flower
++ : rotate a certain amount
+- : rotate a diferent amount
+[ : save the previous state to a stack
+] : remove state from stack
+# : thicken by certain amount
+! : thin by specificed amount
+*/
 var iterations = 5;
 var replace = "";
 for(i = 0; i < iterations; i++){
 	for (let character of string){
 		if(character in rules){ // do the replacement if it is special
 			replace += rules[character]
-		}else{ // if the character is not special, then don't do anything
+		}else if(character === "["){
+
+		}
+		else if(character === "]"){
+
+		}
+		else{ // if the character is not special, then don't do anything
 			replace += character
 		}
 	}
