@@ -8,8 +8,8 @@ Replace "A" with "BA"
 Replace "B" with "A"
 */
 var rules = {
-"A":"AB",
-"B":"A"
+"A":["AA+B", "A-AB", "A-AC"],
+"B":["AC", "+AB", "-AC"]
 };
 // rules for special characters
 /*
@@ -30,15 +30,10 @@ var replace = "";
 for(i = 0; i < iterations; i++){
 	for (let character of string){
 		if(character in rules){ // do the replacement if it is special
-			replace += rules[character]
-		}else if(character === "["){
-
-		}
-		else if(character === "]"){
-
-		}
-		else{ // if the character is not special, then don't do anything
-			replace += character
+			var rand = Math.random() * 3; // chooses one of 3 random choices
+			replace += rules[character][rand];
+		}else{ // if the character is not special, then don't do anything
+			replace += character;
 		}
 	}
 	string = replace;
