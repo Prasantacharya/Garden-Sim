@@ -13,7 +13,7 @@ var rules = {
 };
 // rules for special characters
 /*
-Generate rules:
+Rendering rules:
 ------------
 A : Stalk
 B : Leaf
@@ -30,7 +30,7 @@ var replace = "";
 for(i = 0; i < iterations; i++){
 	for (let character of string){
 		if(character in rules){ // do the replacement if it is special
-			var rand = Math.random() * 3; // chooses one of 3 random choices
+			var rand = Math.floor(Math.random() * 3); // chooses one of 3 random choices
 			replace += rules[character][rand];
 		}else{ // if the character is not special, then don't do anything
 			replace += character;
