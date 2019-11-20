@@ -16,7 +16,7 @@ var rules = {
 var iterations = 5;
 var replace = "";
 for(i = 0; i < iterations; i++){
-	for each(var character in string){
+	for (let character of string){
 		if(character in rules){ // do the replacement if it is special
 			replace += rules[character]
 		}else{ // if the character is not special, then don't do anything
