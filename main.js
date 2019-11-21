@@ -1,3 +1,5 @@
+'use strict';
+
 //const parameters
 const WIN_WIDTH = 1600;
 const WIN_HEIGHT = 900;
@@ -38,6 +40,16 @@ var groundPlane = new THREE.Mesh(groundPlaneMesh, groundPlaneMaterial);
 groundPlane.receiveShadow = true;
 groundPlane.translateY(-1)
 scene.add(groundPlane);
+
+///Raycaster stuff for picking
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector3();
+
+function onMouseMoveUpdatePos( event ){
+    mouse.x = ( event.clientX / WIN_WIDTH ) * 2 - 1;
+    mouse.y = -( event.clientY / WIN_HEIGHT ) * 2 + 1;
+    mouse.z = 1.0;
+}
 
 //ambient light
 var ambientLight = new THREE.AmbientLight(0x404040);
@@ -81,9 +93,9 @@ torus.translateY(8);
 scene.add(torus);
 
 //Camera parameters
-camera.position.z = 20;
-camera.position.y = 21;
-camera.position.x = 4;
+camera.translateZ(20);
+camera.translateY(21);
+camera.translateX(4);
 camera.lookAt(0,0,0);
 
 function render(){
@@ -92,7 +104,27 @@ function render(){
     //since the controls are dampened, this has to be called
     controls.update();
 
+    //raycast
+    raycaster.setFromCamera(mouse, camera);
+    //probably want the target type be something other than all scene objects
+    let intersects = raycaster.intersectObjects(scene.children);
+    if(intersects.length > 0){
+        for(let i = 0; i < intersects.length; ++i){
+            //can't exclude objects from raycaster, only include, so do this
+            if(intersects[i].object === axesHelper){
+                continue;
+            }
+            axesHelper.position.x = intersects[i].point.x;
+            axesHelper.position.y = intersects[i].point.y;
+            axesHelper.position.z = intersects[i].point.z;
+            break;
+        }
+    }
+
+
     renderer.render(scene, camera);
 }
+
+window.addEventListener('mousemove', onMouseMoveUpdatePos, false);
 
 render();
