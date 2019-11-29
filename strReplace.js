@@ -7,7 +7,9 @@ class seed{
 	addRule(symbol, replacement){
 		// allows you to add a string replacement rule
 		if(!(symbol in rules)){ // if the symbol does not exist in the rules, then add it
-			rules[symbol] = [replacement, "", ""];
+			rules[symbol] = [replacement];
+		}else{
+			rules[symbol].add(replacement);
 		}
 	}
 	breed(seed2){
@@ -41,8 +43,10 @@ function generatePts(seed, start){
 	let start = 0.0;
 	let end = 0.0;
 	for (let char of str){
-		// if it is a character, then we would
-
+		// if it is a letter, we add the specified ammount to the
+		// if it is a + or a -, we rotate by that specified ammount
+		// if it is a [, we save the current state
+		// if it is a ], we go back to the previous state
 	}
 
 }
