@@ -7,7 +7,9 @@ class seed{
 	addRule(symbol, replacement){
 		// allows you to add a string replacement rule
 		if(!(symbol in rules)){ // if the symbol does not exist in the rules, then add it
-			rules[symbol] = [replacement, "", ""];
+			rules[symbol] = [replacement];
+		}else{
+			rules[symbol].push(replacement);
 		}
 	}
 	breed(seed2){
@@ -33,18 +35,42 @@ function makeString(seed, iterations){
 		string = replace;
 		console.log(string);
 	}
+	return string;
 }
 
-function generatePts(seed, start){
+function generatePts(seed, itr, start){
 	// is able to generate the points from the seeds
-	let str = seed.stringReplace;
-	let start = 0.0;
-	let end = 0.0;
+
+	let str = makeString(seed, itr);
+	let x = start[0];// x point
+	let y = start[1];// y point
+	// let z = start[2] // for 3d later on
+	let degree = 0.0;
+	let stack = [];
+	var points = [];
+
 	for (let char of str){
-		// if it is a character, then we would
+		if(char === "A" || char === "B"){
+			// if it is a letter, we add the specified ammount to the
+			x += seed.extra[char] * Math.cos(degree);
+			y += seed.extra[char] * Math.sin(degree);
+			points.push([x,y]);
+		}else if(char === "+" || char === "-"){
+				// if it is a + or a -, we rotate by that specified ammount
+				degree += seed.extra[char];
+		} else if(char === "["){
+			// if it is a [, we save the current state
+			stack.unshift([x,y, degree], 0);
+		} else if(char === "]"){
+			// if it is a ], we go back to the previous state
+			x = stack[0][0];
+			y = stack[0][1];
+			degree = stack[0][2];
+		}
 
 	}
 
+	return points;
 }
 
 // example of a seed object
@@ -53,10 +79,10 @@ dictionary = {
   "B": ["B"]
 };
 extraRules = {
-  "-":-30,/*degrees clockwise*/
-  "+":30,/*degrees counter-clockwise*/
-  "A":10,/*side length*/
-  "B":15/*side length*/
+  "-":-Math.PI / 6,/*degrees clockwise*/
+  "+":-Math.PI/ 6,/*degrees counter-clockwise*/
+  "A":1,/*side length*/
+  "B":1.5/*side length*/
 };
 s = new seed("A", dictionary, extraRules);
-makeString(s, 4);
+console.log(generatePts(s, 4, [0,-1]));
