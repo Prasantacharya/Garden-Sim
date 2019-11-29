@@ -1,41 +1,62 @@
-// String replacement code:
-// test out without rendering things first
-var string = "AB";
-/*
-String replacement method:
--------------------------
-Replace "A" with "BA"
-Replace "B" with "A"
-*/
-var rules = {
-"A":["AA+B", "A-AB", "A-AC"],
-"B":["AC", "+AB", "-AC"]
-};
-// rules for special characters
-/*
-Rendering rules:
-------------
-A : Stalk
-B : Leaf
-C : Flower
-+ : rotate a certain amount
-- : rotate a diferent amount
-[ : save the previous state to a stack
-] : remove state from stack
-# : thicken by certain amount
-! : thin by specificed amount
-*/
-var iterations = 5;
-var replace = "";
-for(i = 0; i < iterations; i++){
-	for (let character of string){
-		if(character in rules){ // do the replacement if it is special
-			var rand = Math.floor(Math.random() * 3); // chooses one of 3 random choices
-			replace += rules[character][rand];
-		}else{ // if the character is not special, then don't do anything
-			replace += character;
+class seed{
+	constructor(string, rules, extraRules){
+		this.string = string;
+		this.rules = rules; // contains the rules for string replacement
+		this.extra = extraRules; // contains the rules for extra symbols (how long, rotation, etc)
+	}
+	addRule(symbol, replacement){
+		// allows you to add a string replacement rule
+		if(!(symbol in rules)){ // if the symbol does not exist in the rules, then add it
+			rules[symbol] = [replacement, "", ""];
 		}
 	}
-	string = replace;
-	// console.log(string); // just to verify if it works
+	breed(seed2){
+		// is able to create a new seed when combined with another seed
+
+	}
+
 }
+
+function makeString(seed, iterations){
+	// makes the string from a seed, and a number of iterations
+	let replace = "";
+	let string = seed.string;
+	for(i = 0; i < iterations; i++){
+		for(let character of string){
+			if(character in seed.rules){
+				let rand = Math.floor(Math.random() * seed.rules[character].length);
+				replace += seed.rules[character][rand];
+			}else{
+				replace += character;
+			}
+		}
+		string = replace;
+		console.log(string);
+	}
+}
+
+function generatePts(seed, start){
+	// is able to generate the points from the seeds
+	let str = seed.stringReplace;
+	let start = 0.0;
+	let end = 0.0;
+	for (let char of str){
+		// if it is a character, then we would
+
+	}
+
+}
+
+// example of a seed object
+dictionary = {
+  "A": ["AB"],
+  "B": ["B"]
+};
+extraRules = {
+  "-":-30,/*degrees clockwise*/
+  "+":30,/*degrees counter-clockwise*/
+  "A":10,/*side length*/
+  "B":15/*side length*/
+};
+s = new seed("A", dictionary, extraRules);
+makeString(s, 4);
