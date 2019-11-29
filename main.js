@@ -4,6 +4,9 @@
 const WIN_WIDTH = 1600;
 const WIN_HEIGHT = 900;
 const VIEW_FOV = 75;
+const GROUND_SIZE = 200;
+const CAMERA_BOUNDS_X = 20;
+const CAMERA_BOUNDS_Z = 20;
 
 //scene, camera, renderer, etc
 const scene = new THREE.Scene();
@@ -28,7 +31,7 @@ controls.panSpeed = 0.85;
 
 //setup of GroundPlane (ie a plane for ground...)
 //TODO: convert plane params from magic numbers to consts
-var groundPlaneMesh = new THREE.PlaneGeometry(100, 100, 1, 1);
+var groundPlaneMesh = new THREE.PlaneGeometry(GROUND_SIZE, GROUND_SIZE, 1, 1);
 groundPlaneMesh.rotateX(Math.PI/2);
 var groundPlaneMaterial = new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide,
@@ -101,9 +104,6 @@ camera.lookAt(0,0,0);
 function render(){
     requestAnimationFrame(render);
 
-    //since the controls are dampened, this has to be called
-    controls.update();
-
     //raycast
     raycaster.setFromCamera(mouse, camera);
     //probably want the target type be something other than all scene objects
@@ -120,6 +120,13 @@ function render(){
             break;
         }
     }
+
+    //limit the camera to inside an area
+    controls.target.x = Math.min(CAMERA_BOUNDS_X, Math.max(-CAMERA_BOUNDS_X, controls.target.x ));
+    controls.target.z = Math.min(CAMERA_BOUNDS_Z, Math.max(-CAMERA_BOUNDS_Z, controls.target.z));
+
+    //since the controls are dampened, this has to be called
+    controls.update();
 
 
     renderer.render(scene, camera);
