@@ -9,7 +9,7 @@ class seed{
 		if(!(symbol in rules)){ // if the symbol does not exist in the rules, then add it
 			rules[symbol] = [replacement];
 		}else{
-			rules[symbol].add(replacement);
+			rules[symbol].push(replacement);
 		}
 	}
 	breed(seed2){
@@ -53,13 +53,13 @@ function generatePts(seed, start){
 			// if it is a letter, we add the specified ammount to the
 			x += seed.extra[char] * Math.cos(degree);
 			y += seed.extra[char] * Math.sin(degree);
-			points.add([x,y]);
+			points.push([x,y]);
 		}else if(char === "+" || char === "-"){
 				// if it is a + or a -, we rotate by that specified ammount
 				degree += seed.extra[char];
 		} else if(char === "["){
 			// if it is a [, we save the current state
-			stack.add([x,y, degree]);
+			stack.unshift([x,y, degree], 0);
 		} else if(char === "]"){
 			// if it is a ], we go back to the previous state
 			x = stack[0][0];
@@ -68,7 +68,7 @@ function generatePts(seed, start){
 		}
 
 	}
-	
+
 	return points;
 }
 
