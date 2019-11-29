@@ -61,18 +61,18 @@ scene.add(ambientLight);
 //directional light that casts shadows
 var sunLight = new THREE.DirectionalLight(0xFFFFFF, 0.5);
 sunLight.castShadow = true;
-sunLight.position.set(20, 30, 0);
+sunLight.position.set(200, 300, 0);
 scene.add(sunLight);
 
 //shadow settings
-sunLight.shadow.mapSize.width = 2048;
-sunLight.shadow.mapSize.height = 2048;
+sunLight.shadow.mapSize.width = 4096;
+sunLight.shadow.mapSize.height = 4096;
 //l,r,top,bot are based on the scene dimensions right now.
 //TODO: turn these magic numbers into consts
-sunLight.shadow.camera.left = -50;
-sunLight.shadow.camera.right = 50;
-sunLight.shadow.camera.top = 30;
-sunLight.shadow.camera.bottom = -4;
+sunLight.shadow.camera.left = -GROUND_SIZE/2;
+sunLight.shadow.camera.right = GROUND_SIZE/2;
+sunLight.shadow.camera.top = GROUND_SIZE/2;
+sunLight.shadow.camera.bottom = -GROUND_SIZE/2;
 sunLight.shadow.camera.near = 0.1;
 sunLight.shadow.camera.far = 500;
 sunLight.shadow.camera.updateProjectionMatrix();
@@ -100,6 +100,54 @@ camera.translateZ(20);
 camera.translateY(21);
 camera.translateX(4);
 camera.lookAt(0,0,0);
+
+
+//computes an array of vectors for path generation? Maybe?
+//just a placeholder for now
+function computePointsFromString(string){
+    let points = [];
+
+    let i = 0;
+    let x = 0, y = 0;
+    for(; i < string.length; ++i){
+        let char = string.charAt(i);
+        
+        if(char === "B"){
+            ++i;
+            break;
+        }
+
+        points.push( new THREE.Vector3(0, y, 0));
+        y += 2;
+    }
+
+    for(; i < string.length; ++i){
+        let char = string.charAt(i);
+        if(char === "B"){
+            ++i;
+            break;
+        }
+
+        points.push(new THREE.Vector3(x+2, y, 0));
+        ++x;
+        ++y;
+    }
+
+    return points;
+}
+
+//var path1 = new THREE.CatmullRomCurve3(computePointsFromString("AAAA"));
+var path2 = new THREE.CatmullRomCurve3(computePointsFromString("AAAAAABAAAA"));
+
+//var pathGeo1 = new THREE.TubeGeometry(path1, 256, 2, 8, false);
+var pathGeo2 = new THREE.TubeGeometry(path2, 512, 1, 8, false);
+var pathMesh2 = new THREE.Mesh(pathGeo2, torusMaterial);
+pathMesh2.translateX(10);
+pathMesh2.translateZ(10);
+pathMesh2.castShadow = true;
+pathMesh2.receiveShadow = true;
+scene.add(pathMesh2);
+
 
 function render(){
     requestAnimationFrame(render);
