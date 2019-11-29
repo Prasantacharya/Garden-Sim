@@ -38,9 +38,10 @@ function makeString(seed, iterations){
 	return string;
 }
 
-function generatePts(seed, start){
+function generatePts(seed, itr, start){
 	// is able to generate the points from the seeds
-	let str = seed.stringReplace;
+
+	let str = makeString(seed, itr);
 	let x = start[0];// x point
 	let y = start[1];// y point
 	// let z = start[2] // for 3d later on
@@ -80,8 +81,8 @@ dictionary = {
 extraRules = {
   "-":-Math.PI / 6,/*degrees clockwise*/
   "+":-Math.PI/ 6,/*degrees counter-clockwise*/
-  "A":10,/*side length*/
-  "B":15/*side length*/
+  "A":1,/*side length*/
+  "B":1.5/*side length*/
 };
 s = new seed("A", dictionary, extraRules);
-generatePts(makeString(s, 4), [0,-1]);
+console.log(generatePts(s, 4, [0,-1]));
