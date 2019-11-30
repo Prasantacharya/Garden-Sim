@@ -32,6 +32,7 @@ function makeString(seed, iterations){
 			}
 		}
 		string = replace;
+		replace = "";
 		// console.log(string);
 	}
 	return string;
@@ -89,8 +90,8 @@ function scale(points){
 		if(max < Math.abs(points[i][1])) max = Math.abs(points[i][1]);
 	}
 	for(i = 0; i < points.length; i++){
-		points[i][0] = points[i][0] / max;
-		points[i][1] = points[i][1] / max;
+		points[i][0] = points[i][0] / (max+ 0.25);
+		points[i][1] = points[i][1] / (max + 0.25);
 	}
 	return points;
 }
