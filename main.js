@@ -1,5 +1,9 @@
 'use strict';
 
+///////////////////////
+// SCENE INITIALIZATION
+///////////////////////
+
 //const parameters
 const WIN_WIDTH = 1600;
 const WIN_HEIGHT = 900;
@@ -30,7 +34,6 @@ controls.zoomSpeed = 0.5;
 controls.panSpeed = 0.85;
 
 //setup of GroundPlane (ie a plane for ground...)
-//TODO: convert plane params from magic numbers to consts
 var groundPlaneMesh = new THREE.PlaneGeometry(GROUND_SIZE, GROUND_SIZE, 1, 1);
 groundPlaneMesh.rotateX(Math.PI/2);
 var groundPlaneMaterial = new THREE.MeshPhongMaterial({
@@ -101,73 +104,64 @@ camera.translateY(21);
 camera.translateX(4);
 camera.lookAt(0,0,0);
 
+/////////////////////////
+// THE MEAT OF THE PROGRAM
+////////////////////////
 
-//computes an array of vectors for path generation? Maybe?
-//just a placeholder for now
-function computePointsFromString(string){
-    let points = [];
 
-    let i = 0;
-    let x = 0, y = 0;
-    for(; i < string.length; ++i){
-        let char = string.charAt(i);
-        
-        if(char === "B"){
-            ++i;
-            break;
+//seed stuff?
+//each entry in this array is a Three.Group, and that Group will contain the Seed object data, maybe?
+var seedGroups = [];
+var seedBulbMaterial = new THREE.MeshPhongMaterial({
+    color: 0x613e09,
+    shininess: 5
+});
+
+//on click, throw down a seed! I guess???
+renderer.domElement.addEventListener('click', event => {
+    if(event.button === 0){
+
+        //fire raycaster, check if clear line to ground plane
+        raycaster.setFromCamera(mouse, camera);
+        let intersects = raycaster.intersectObjects(scene.children, false);
+
+        //the first thing we hit is the groundplane
+        //could add boolean var check here, if we're "ready" to plant a seed
+        if(intersects.length > 0 && intersects[0].object === groundPlane){
+
+            //create a new group, put a seedbulb (?) in it, then put it in the scene
+            let newGroup = new THREE.Group();
+            let geo = new THREE.Mesh(new THREE.SphereGeometry(1,8,8), seedBulbMaterial);
+            geo.castShadow = true;
+            geo.receiveShadow = true;
+            newGroup.add(geo);
+            seedGroups.push(newGroup);
+            newGroup.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z);
+            scene.add(newGroup);
         }
-
-        points.push( new THREE.Vector3(0, y, 0));
-        y += 2;
     }
-
-    for(; i < string.length; ++i){
-        let char = string.charAt(i);
-        if(char === "B"){
-            ++i;
-            break;
-        }
-
-        points.push(new THREE.Vector3(x+2, y, 0));
-        ++x;
-        ++y;
-    }
-
-    return points;
-}
-
-//var path1 = new THREE.CatmullRomCurve3(computePointsFromString("AAAA"));
-var path2 = new THREE.CatmullRomCurve3(computePointsFromString("AAAAAABAAAA"));
-
-//var pathGeo1 = new THREE.TubeGeometry(path1, 256, 2, 8, false);
-var pathGeo2 = new THREE.TubeGeometry(path2, 512, 1, 8, false);
-var pathMesh2 = new THREE.Mesh(pathGeo2, torusMaterial);
-pathMesh2.translateX(10);
-pathMesh2.translateZ(10);
-pathMesh2.castShadow = true;
-pathMesh2.receiveShadow = true;
-scene.add(pathMesh2);
+});
 
 
 function render(){
     requestAnimationFrame(render);
 
-    //raycast
-    raycaster.setFromCamera(mouse, camera);
-    //probably want the target type be something other than all scene objects
-    let intersects = raycaster.intersectObjects(scene.children);
-    if(intersects.length > 0){
-        for(let i = 0; i < intersects.length; ++i){
-            //can't exclude objects from raycaster, only include, so do this
-            if(intersects[i].object === axesHelper){
-                continue;
-            }
-            axesHelper.position.x = intersects[i].point.x;
-            axesHelper.position.y = intersects[i].point.y;
-            axesHelper.position.z = intersects[i].point.z;
-            break;
-        }
-    }
+    // //raycast
+    // raycaster.setFromCamera(mouse, camera);
+    // //probably want the target type be something other than all scene objects
+    // let intersects = raycaster.intersectObjects(scene.children);
+    // if(intersects.length > 0){
+    //     for(let i = 0; i < intersects.length; ++i){
+    //         //can't exclude objects from raycaster, only include, so do this
+    //         if(intersects[i].object === axesHelper){
+    //             continue;
+    //         }
+    //         axesHelper.position.x = intersects[i].point.x;
+    //         axesHelper.position.y = intersects[i].point.y;
+    //         axesHelper.position.z = intersects[i].point.z;
+    //         break;
+    //     }
+    // }
 
     //limit the camera to inside an area
     controls.target.x = Math.min(CAMERA_BOUNDS_X, Math.max(-CAMERA_BOUNDS_X, controls.target.x ));
@@ -180,6 +174,6 @@ function render(){
     renderer.render(scene, camera);
 }
 
-window.addEventListener('mousemove', onMouseMoveUpdatePos, false);
+renderer.domElement.addEventListener('mousemove', onMouseMoveUpdatePos, false);
 
 render();
