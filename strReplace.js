@@ -1,4 +1,4 @@
-class seed{
+class Seed{
 	constructor(string, rules, extraRules){
 		this.string = string;
 		this.rules = rules; // contains the rules for string replacement
@@ -32,7 +32,7 @@ function makeString(seed, iterations){
 			}
 		}
 		string = replace;
-		console.log(string);
+		// console.log(string);
 	}
 	return string;
 }
@@ -80,15 +80,15 @@ function scale(points){
 }
 
 // example of a seed object
-dictionary = {
+var dictionary = {
   "F": ["FF"],
   "X": ["F-[[X]+X]+F[+FX]-X"]
 };
-extraRules = {
+var extraRules = {
   "-":-Math.PI / 6,/*degrees clockwise*/
   "+":-Math.PI/ 6,/*degrees counter-clockwise*/
   "X":1,/*side length*/
   "F":1.5/*side length*/
 };
-s = new seed("X", dictionary, extraRules);
-console.log(generatePts(s, 2, [0,-1]));
+// s = new Seed("X", dictionary, extraRules);
+// console.log(generatePts(s, 2, [0,-1]));
