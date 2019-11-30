@@ -14,7 +14,6 @@ class seed{
 	}
 	breed(seed2){
 		// is able to create a new seed when combined with another seed
-
 	}
 
 }
@@ -50,7 +49,7 @@ function generatePts(seed, itr, start){
 	var points = [];
 
 	for (let char of str){
-		if(char === "A" || char === "B"){
+		if(valid(char) && (char in seed.extra)){ // assumes that all alphabetic characters are capital
 			// if it is a letter, we add the specified ammount to the
 			x += seed.extra[char] * Math.cos(degree);
 			y += seed.extra[char] * Math.sin(degree);
@@ -67,22 +66,29 @@ function generatePts(seed, itr, start){
 			y = stack[0][1];
 			degree = stack[0][2];
 		}
-
 	}
-
 	return points;
+}
+
+function valid(char){
+  char.toUpperCase(); // checks if the character is valid
+  return (char.charCodeAt(0) >= 65 && char.charCodeAt() <= 90);
+}
+
+function scale(points){
+	// scales all the points so they are a reasonable size
 }
 
 // example of a seed object
 dictionary = {
-  "A": ["AB"],
-  "B": ["B"]
+  "F": ["FF"],
+  "X": ["F-[[X]+X]+F[+FX]-X"]
 };
 extraRules = {
   "-":-Math.PI / 6,/*degrees clockwise*/
   "+":-Math.PI/ 6,/*degrees counter-clockwise*/
-  "A":1,/*side length*/
-  "B":1.5/*side length*/
+  "X":1,/*side length*/
+  "F":1.5/*side length*/
 };
-s = new seed("A", dictionary, extraRules);
-console.log(generatePts(s, 4, [0,-1]));
+s = new seed("X", dictionary, extraRules);
+console.log(generatePts(s, 2, [0,-1]));
