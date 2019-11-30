@@ -118,18 +118,19 @@ var seedBulbMaterial = new THREE.MeshPhongMaterial({
 });
 
 var MouseForDelta = new THREE.Vector2();
+var seedReady = false;
+var seedText = '';
 //on click, throw down a seed! I guess???
 renderer.domElement.addEventListener('click', event => {
     let deltaX = Math.abs(MouseForDelta.x - event.clientX);
     let deltaY = Math.abs(MouseForDelta.y - event.clientY);
-    if(event.button === 0 && deltaY < 5 && deltaX < 5){
+    if(seedReady && event.button === 0 && deltaY < 5 && deltaX < 5){
 
         //fire raycaster, check if clear line to ground plane
         raycaster.setFromCamera(mouse, camera);
         let intersects = raycaster.intersectObjects(scene.children, false);
 
         //the first thing we hit is the groundplane
-        //could add boolean var check here, if we're "ready" to plant a seed
         if(intersects.length > 0 && intersects[0].object === groundPlane){
 
             //create a new group, put a seedbulb (?) in it, then put it in the scene
@@ -141,6 +142,8 @@ renderer.domElement.addEventListener('click', event => {
             seedGroups.push(newGroup);
             newGroup.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z);
             scene.add(newGroup);
+
+            seedReady = false;
         }
     }
 });
@@ -151,6 +154,24 @@ renderer.domElement.addEventListener('mousedown', event =>{
     MouseForDelta.y = event.clientY;
 });
 
+//textbox and button and event for button that pulls text from textbox for seed generation
+var seedTextBox = document.createElement('input');
+seedTextBox.setAttribute('type','text');
+seedTextBox.setAttribute('placeholder', 'enter seed string');
+document.body.appendChild(seedTextBox);
+var seedTextBoxButton = document.createElement('button');
+seedTextBoxButton.setAttribute('type', 'button');
+seedTextBoxButton.innerHTML = "Submit to seed";
+document.body.appendChild(seedTextBoxButton);
+seedTextBoxButton.onclick = function(){
+    if(seedTextBox.value === ''){
+        return;
+    }
+
+    seedText = seedTextBox.value;
+    seedTextBox.value = '';
+    seedReady = true;
+};
 
 function render(){
     requestAnimationFrame(render);
