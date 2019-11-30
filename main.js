@@ -135,13 +135,16 @@ renderer.domElement.addEventListener('click', event => {
 
             //create a new group, put a seedbulb (?) in it, then put it in the scene
             let newGroup = new THREE.Group();
-            let geo = new THREE.Mesh(new THREE.SphereGeometry(1,8,8), seedBulbMaterial);
-            geo.castShadow = true;
-            geo.receiveShadow = true;
-            newGroup.add(geo);
+            let mesh = new THREE.Mesh(new THREE.SphereGeometry(1,8,8), seedBulbMaterial);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            newGroup.add(mesh);
             seedGroups.push(newGroup);
             newGroup.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z);
             scene.add(newGroup);
+
+            //TODO: maybe here, add the seedtext/the seed made from the seedText to an object, and
+            //put it in the .userData property on the newGroup?
 
             seedReady = false;
         }
@@ -172,6 +175,12 @@ seedTextBoxButton.onclick = function(){
     seedTextBox.value = '';
     seedReady = true;
 };
+
+//TODO: a function that takes in a THREE.Group, increments the related seed iterator,
+//and then remakes the meshes in the group according to the new rules?
+
+//TODO: a button and an event function that drives the above function across all groups
+//in the seedGroups array?
 
 function render(){
     requestAnimationFrame(render);
