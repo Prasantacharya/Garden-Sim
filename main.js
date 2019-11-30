@@ -117,9 +117,12 @@ var seedBulbMaterial = new THREE.MeshPhongMaterial({
     shininess: 5
 });
 
+var MouseForDelta = new THREE.Vector2();
 //on click, throw down a seed! I guess???
 renderer.domElement.addEventListener('click', event => {
-    if(event.button === 0){
+    let deltaX = Math.abs(MouseForDelta.x - event.clientX);
+    let deltaY = Math.abs(MouseForDelta.y - event.clientY);
+    if(event.button === 0 && deltaY < 5 && deltaX < 5){
 
         //fire raycaster, check if clear line to ground plane
         raycaster.setFromCamera(mouse, camera);
@@ -140,6 +143,12 @@ renderer.domElement.addEventListener('click', event => {
             scene.add(newGroup);
         }
     }
+});
+
+//an onMouseDown to help deal with dragEvents causing a click as well
+renderer.domElement.addEventListener('mousedown', event =>{
+    MouseForDelta.x = event.clientX;
+    MouseForDelta.y = event.clientY;
 });
 
 
