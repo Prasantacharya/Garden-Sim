@@ -47,10 +47,14 @@ function generatePts(seed, itr, start){
 	let degree = 0.0;
 	let stack = [];
 	var points = [];
+  // console.log("Starting string:", str);
 
 	for (let char of str){
 		if(valid(char) && (char in seed.extra)){ // assumes that all alphabetic characters are capital
 			// if it is a letter, we add the specified ammount to the
+      // console.log("x: ", x, "| y: ", y, "| degree: ", degree);
+      // console.log(seed.extra[char] * Math.sin(degree));
+			points.push([x,y]);
 			x += seed.extra[char] * Math.cos(degree);
 			y += seed.extra[char] * Math.sin(degree);
 			points.push([x,y]);
@@ -65,6 +69,8 @@ function generatePts(seed, itr, start){
 			x = stack[0][0];
 			y = stack[0][1];
 			degree = stack[0][2];
+			stack.splice(0,1);
+      // stack = stack.splice(1, stack.length - 1);
 		}
 	}
 	return points;
@@ -77,18 +83,26 @@ function valid(char){
 
 function scale(points){
 	// scales all the points so they are a reasonable size
+	let max = 0;
+	for(i = 0; i < points.length; i++){
+		if(max < Math.abs(points[i][0])) max = Math.abs(points[i][0]);
+		if(max < Math.abs(points[i][1])) max = Math.abs(points[i][1]);
+	}
+	for(i = 0; i < points.length; i++){
+		points[i][0] = points[i][0] / max;
+		points[i][1] = points[i][1] / max;
+	}
+	return points;
 }
 
 // example of a seed object
 var dictionary = {
-  "F": ["FF"],
-  "X": ["F-[[X]+X]+F[+FX]-X"]
+  "F": ["F+F-F-FF+F+F-F"]
 };
 var extraRules = {
-  "-":-Math.PI / 6,/*degrees clockwise*/
-  "+":-Math.PI/ 6,/*degrees counter-clockwise*/
-  "X":1,/*side length*/
-  "F":1.5/*side length*/
+  "-":-Math.PI / 2,/*degrees clockwise*/
+  "+":Math.PI / 2,/*degrees counter-clockwise*/
+  "F":1/*side length*/
 };
 // s = new Seed("X", dictionary, extraRules);
-// console.log(generatePts(s, 2, [0,-1]));
+// generatePts(s, 2, [0,-1]);

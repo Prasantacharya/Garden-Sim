@@ -1,5 +1,5 @@
 var gl;
-var points;
+var points = [];
 
 window.onload = function init()
 {
@@ -10,16 +10,20 @@ window.onload = function init()
 
 
     // make a seed
-    var s = new Seed("X", dictionary, extraRules);
+    var s = new Seed("F+F+F+F", dictionary, extraRules);
+    var temp = generatePts(s, 3, [0,0]);
+    temp = scale(temp);
 
-    var vertices = [
-        vec2( -0.5, -0.5 ),
-        vec2(  -0.5,  0.5 ),
-        vec2(  0.5, 0.5 ),
-        vec2( 0.5, -0.5)
-    ];
-    //var vertices = generatePts(s, 2, [0,0]);
-    console.log(vertices);
+    for(let i = 0; i < temp.length; i++){
+      points.push(vec2(temp[i][0], temp[i][1]));
+    }
+    //*/
+    //console.log(temp[0][0]);
+    //points.push(vec2(temp[0][0],temp[0][1]));
+    //points.push(vec2(temp[1][0], temp[1][1]));
+
+    // scale the points
+
 
     //
     //  Configure WebGL
@@ -37,7 +41,7 @@ window.onload = function init()
 
     var bufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
 
     // Associate out shader variables with our data buffer
 
@@ -52,5 +56,5 @@ window.onload = function init()
 
 function render() {
     gl.clear( gl.COLOR_BUFFER_BIT );
-    gl.drawArrays( gl.LINES, 0, 4 );
+    gl.drawArrays( gl.LINES, 0, points.length );
 }
