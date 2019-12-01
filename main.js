@@ -117,6 +117,21 @@ var seedBulbMaterial = new THREE.MeshPhongMaterial({
     shininess: 5
 });
 
+//i have no idea what I'm doing here!
+const seedRules = {
+    "A":"AZ",
+    "B":"AV",
+    "V":"[A]"
+
+};
+
+const seedExtraRules = {
+    "A":1,
+    "Z":1, //side lengths?
+    "+":0.523599 //radians??
+};
+
+
 var MouseForDelta = new THREE.Vector2();
 var seedReady = false;
 var seedText = '';
@@ -145,6 +160,7 @@ renderer.domElement.addEventListener('click', event => {
 
             //TODO: maybe here, add the seedtext/the seed made from the seedText to an object, and
             //put it in the .userData property on the newGroup?
+            newGroup.userData = {seed:new Seed(seedText, seedRules, seedExtraRules), iterations:0};
 
             seedReady = false;
         }
