@@ -4,6 +4,9 @@ class Seed{
 		this.rules = rules; // contains the rules for string replacement
 		this.extra = extraRules; // contains the rules for extra symbols (how long, rotation, etc)
 	}
+	updateString(str){
+		this.string = str;
+	}
 	getString(){
 		return this.string;
 	}
