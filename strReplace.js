@@ -51,27 +51,33 @@ function generatePts(seed, itr, start){
   // console.log("Starting string:", str);
 
 	for (let char of str){
+		// console.log("character: ", char);
 		if(valid(char) && (char in seed.extra)){ // assumes that all alphabetic characters are capital
 			// if it is a letter, we add the specified ammount to the
       // console.log("x: ", x, "| y: ", y, "| degree: ", degree);
       // console.log(seed.extra[char] * Math.sin(degree));
 			points.push([x,y]);
-			x += seed.extra[char] * Math.cos(degree);
-			y += seed.extra[char] * Math.sin(degree);
+			y += seed.extra[char] * Math.cos(degree);
+			x += seed.extra[char] * Math.sin(degree);
 			points.push([x,y]);
 		}else if(char === "+" || char === "-"){
 				// if it is a + or a -, we rotate by that specified ammount
 				degree += seed.extra[char];
 		} else if(char === "["){
 			// if it is a [, we save the current state
-			stack.unshift([x,y, degree], 0);
+			// console.log("x: ", x, " y: ", y);
+			stack.unshift([x,y, degree]);
+			// console.log(stack[0]);
+			// console.log("stack size: ", stack.length);
 		} else if(char === "]"){
 			// if it is a ], we go back to the previous state
+
 			x = stack[0][0];
 			y = stack[0][1];
 			degree = stack[0][2];
 			stack.splice(0,1);
-      // stack = stack.splice(1, stack.length - 1);
+			// console.log("StackSize: ", stack);
+			// console.log("stack size: ", stack.length);
 		}
 	}
 	return points;
@@ -96,13 +102,17 @@ function scale(points){
 	return points;
 }
 
+function rotate(){
+
+}
+
 // example of a seed object
 var dictionary = {
-  "F": ["F+F-F-FF+F+F-F"]
+  "F": ["F[+FF][-FF]F[-F][+F]F", "F[-FF][+F]FF[-F][+F]F"]
 };
 var extraRules = {
-  "-":-Math.PI / 2,/*degrees clockwise*/
-  "+":Math.PI / 2,/*degrees counter-clockwise*/
+  "-":-0.6108652,/*degrees clockwise*/
+  "+":0.6108652,/*degrees counter-clockwise*/
   "F":1/*side length*/
 };
 // s = new Seed("X", dictionary, extraRules);

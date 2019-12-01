@@ -5,8 +5,8 @@
 ///////////////////////
 
 //const parameters
-const WIN_WIDTH = 1600;
-const WIN_HEIGHT = 900;
+const WIN_WIDTH = 800;
+const WIN_HEIGHT = 450;
 const VIEW_FOV = 75;
 const GROUND_SIZE = 200;
 const CAMERA_BOUNDS_X = 20;

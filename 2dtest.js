@@ -10,20 +10,13 @@ window.onload = function init()
 
 
     // make a seed
-    var s = new Seed("F+F+F+F", dictionary, extraRules);
-    var temp = generatePts(s, 3, [0,0]);
+    var s = new Seed("F", dictionary, extraRules);
+    var temp = generatePts(s, 4, [0,0]);
     temp = scale(temp);
-
+    console.log(temp.length);
     for(let i = 0; i < temp.length; i++){
       points.push(vec2(temp[i][0], temp[i][1]));
     }
-    //*/
-    //console.log(temp[0][0]);
-    //points.push(vec2(temp[0][0],temp[0][1]));
-    //points.push(vec2(temp[1][0], temp[1][1]));
-
-    // scale the points
-
 
     //
     //  Configure WebGL
