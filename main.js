@@ -197,14 +197,15 @@ seedTextBoxButton.onclick = function(){
 
 //TODO: a button and an event function that drives the above function across all groups
 //in the seedGroups array?
-var seedGrowButton = document.getElementById('Grow');
-seedGrowButton.onclick = function(){
-    for(let i = 0; i < seedGroups.length; ++i){
-        seedGroups[i].userData.iterations += 1;
-        //call regenerate/reiterate/regrow function on seedGroups[i] here
+window.onload = function(){
+    var seedGrowButton = document.getElementById('Grow');
+    seedGrowButton.onclick = function(){
+        for(let i = 0; i < seedGroups.length; ++i){
+            seedGroups[i].userData.iterations += 1;
+            //call regenerate/reiterate/regrow function on seedGroups[i] here
+        }
     }
 }
-
 function render(){
     requestAnimationFrame(render);
 
