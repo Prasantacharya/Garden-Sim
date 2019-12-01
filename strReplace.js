@@ -98,16 +98,6 @@ function valid(char){
   return (char.charCodeAt(0) >= 65 && char.charCodeAt() <= 90);
 }
 
-/*
-function generate3d(seed, itr, start){
-
-}
-
-function scale3d(points){
-
-}
-*/
-
 function scale(points){
 	// scales all the points so they are a reasonable size
 	let max = 0;

@@ -203,9 +203,58 @@ window.onload = function(){
         for(let i = 0; i < seedGroups.length; ++i){
             seedGroups[i].userData.iterations += 1;
             //call regenerate/reiterate/regrow function on seedGroups[i] here
+            nextIterate(seedGroups[i], seedGroups[i].userData.iterations); // updates the seedGroup's string
+            generatePts(seedGroups[i]);
         }
     }
 }
+
+// seed path generation here
+function nextIterate(seed, i){
+  return seed.updateString(makeString(seed, i));// changes the seed's string to be the i-th iteration
+}
+
+// generates the points and the paths
+// returns them as a list of of continious points
+// ex: [[a,b,c], [d,e,f], [g,h,i,j]]. the letters are Vector3's
+// [a,b,c] is continious, [d,e,f] is continious, and [g,h,i,j] is continious
+function generatePoints3d(seed, xStart, yStart){
+  let string = seed.getString();
+  let x = xStart;// starting x position
+  let y = yStart;// starting y position
+  let z = 0;
+
+  let degree = 0.0;
+  let stack = [];
+  let points = [[new Vector3(x,y,z)]];
+
+  let currentPath = 0;
+  for(let char of string){
+    if(valid(char) && (char in seed.extra)){
+      // valid(char) just makes sure that the character is in the alphabet
+      let rotate = THREE.Euler(degree, degree, degree, "XYZ");
+      let newPath = new Vector3(x,y,z);
+      points[currentPath].push(newPath.applyEuler(rotate));
+    } else if(char === "+" || char === "-"){
+      // increase the rotation degree
+      degree += seed.extra[char];
+    } else if(char === "["){
+      // push it onto the stack
+      stack.unshift([x,y,z,degree]);
+    } else if(char === "]"){
+
+      x = stack[0][0];
+      y = stack[0][1];
+      z = stack[0][2];
+      degree = stack[0][3];
+      stack.splice(0,1);
+      currentPath += 1;
+      points.push([new Vector3(x,y,z)]);
+    }
+  }
+  return points;
+}
+
 function render(){
     requestAnimationFrame(render);
 
