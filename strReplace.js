@@ -4,6 +4,15 @@ class Seed{
 		this.rules = rules; // contains the rules for string replacement
 		this.extra = extraRules; // contains the rules for extra symbols (how long, rotation, etc)
 	}
+	getString(){
+		return this.string;
+	}
+	getRules(){
+		return this.rules;
+	}
+	getExtraRules(){
+		return this.extraRules;
+	}
 	addRule(symbol, replacement){
 		// allows you to add a string replacement rule
 		if(!(symbol in rules)){ // if the symbol does not exist in the rules, then add it
@@ -14,6 +23,10 @@ class Seed{
 	}
 	breed(seed2){
 		// is able to create a new seed when combined with another seed
+		let newString = "";
+		let newRules = {};
+		let newExtra = {};
+		return new Seed(newString, newRules, newExtra);
 	}
 
 }
@@ -65,19 +78,13 @@ function generatePts(seed, itr, start){
 				degree += seed.extra[char];
 		} else if(char === "["){
 			// if it is a [, we save the current state
-			// console.log("x: ", x, " y: ", y);
 			stack.unshift([x,y, degree]);
-			// console.log(stack[0]);
-			// console.log("stack size: ", stack.length);
 		} else if(char === "]"){
 			// if it is a ], we go back to the previous state
-
 			x = stack[0][0];
 			y = stack[0][1];
 			degree = stack[0][2];
 			stack.splice(0,1);
-			// console.log("StackSize: ", stack);
-			// console.log("stack size: ", stack.length);
 		}
 	}
 	return points;
@@ -87,6 +94,16 @@ function valid(char){
   char.toUpperCase(); // checks if the character is valid
   return (char.charCodeAt(0) >= 65 && char.charCodeAt() <= 90);
 }
+
+/*
+function generate3d(seed, itr, start){
+
+}
+
+function scale3d(points){
+
+}
+*/
 
 function scale(points){
 	// scales all the points so they are a reasonable size
@@ -102,18 +119,31 @@ function scale(points){
 	return points;
 }
 
-function rotate(){
+// some starter seeds
+var replacementLibrary = {
+    "Fern":{},
+		"Bramble":{  "F": ["F[+FF][-FF]F[-F][+F]F", "F[-FF][+F]FF[-F][+F]F", "F[+F]F[-FF]F[-F+F-F][F]F"]}
+};
 
+var extraRules = {
+		"Fern":{},
+		"Bramble":{"-":-0.6108652,/*degrees clockwise*/
+		"+":0.6108652,/*degrees counter-clockwise*/
+		"F":1/*side length*/}
+};
+
+var startingRules = {
+		"Fern":"",
+		"Bramble":"F"
+};
+
+function newSeed(seedType){
+	return new Seed(startingRules[seedType], replacementLibrary[seedType], extraRules[seedType]);
 }
 
-// example of a seed object
-var dictionary = {
-  "F": ["F[+FF][-FF]F[-F][+F]F", "F[-FF][+F]FF[-F][+F]F"]
-};
-var extraRules = {
-  "-":-0.6108652,/*degrees clockwise*/
-  "+":0.6108652,/*degrees counter-clockwise*/
-  "F":1/*side length*/
-};
+function addSeedToLibrary(seed){
+	// adds a new seed to the library
+}
+
 // s = new Seed("X", dictionary, extraRules);
 // generatePts(s, 2, [0,-1]);

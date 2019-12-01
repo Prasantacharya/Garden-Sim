@@ -8,10 +8,19 @@ window.onload = function init()
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
+    // example rules
+    var dictionary = {
+      "F": ["F[+FF][-FF]F[-F][+F]F", "F[-FF][+F]FF[-F][+F]F", "F[+F]F[-FF]F[-F+F-F][F]F"]
+    };
+    var extraRules = {
+      "-":-0.6108652,/*degrees clockwise*/
+      "+":0.6108652,/*degrees counter-clockwise*/
+      "F":1/*side length*/
+    };
 
     // make a seed
     var s = new Seed("F", dictionary, extraRules);
-    var temp = generatePts(s, 4, [0,0]);
+    var temp = generatePts(s, 6, [0,-20]);
     temp = scale(temp);
     console.log(temp.length);
     for(let i = 0; i < temp.length; i++){
