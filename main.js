@@ -237,6 +237,9 @@ window.onload = function(){
 
             //add new meshes to group
             for(let j = 0; j < t.length; ++j){
+                if(t[j].length <= 1){
+                    continue;
+                }
                 let path = new THREE.CatmullRomCurve3(t[j]);
                 let geo = new THREE.TubeGeometry(path, t[j].length*5, 0.5, 6, false);
                 let mesh = new THREE.Mesh(geo, torusMaterial);
