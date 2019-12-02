@@ -87,7 +87,7 @@ scene.add(axesHelper);
 //torusKnot for shadow debugging
 var torusGeometry = new THREE.TorusKnotGeometry(6, 1, 128, 16);
 var torusMaterial = new THREE.MeshPhongMaterial({
-    side: THREE.FrontSide,
+    side: THREE.DoubleSide,
     color: 0xffff00,
     reflectivity: 0.8,
     shininess: 70
@@ -208,20 +208,20 @@ window.onload = function(){
 
             //remove old meshes from group
             // type error here
-            for(let j = seedGroups[i].children.length; j > 0; --j){
+            for(let j = seedGroups[i].children.length-1; j > 0; --j){
                 seedGroups[i].children[j].geometry.dispose();
                 seedGroups[i].remove(seedGroups[i].children[j]);
             }
 
             //add new meshes to group
-            // for(let j = 0; j < t.length; ++j){
-            //     let path = new THREE.CatmullRomCurve3(t[j]);
-            //     let geo = new THREE.TubeGeometry(path, 5, 0.5, 6, false);
-            //     let mesh = new THREE.Mesh(geo, torusMaterial);
-            //     mesh.castShadow = true;
-            //     mesh.receiveShadow = true;
-            //     seedGroups[i].add(mesh);
-            // }
+            for(let j = 0; j < t.length; ++j){
+                let path = new THREE.CatmullRomCurve3(t[j]);
+                let geo = new THREE.TubeGeometry(path, 5, 0.5, 6, false);
+                let mesh = new THREE.Mesh(geo, torusMaterial);
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                seedGroups[i].add(mesh);
+            }
         }
     }
 }
