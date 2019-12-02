@@ -121,6 +121,8 @@ var seedBulbMaterial = new THREE.MeshPhongMaterial({
 const seedRules = {
     "A":["AW"],
     "B":["AV"],
+    "C":["+WC"],
+    "D":["-WD"],
     "V":["+[A]W", "-[A]W"]
 };
 
