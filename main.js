@@ -226,7 +226,7 @@ function generatePoints3d(seed, xStart, yStart){
 
   let degree = 0.0;
   let stack = [];
-  let points = [[new Vector3(x,y,z)]];
+  let points = [[new THREE.Vector3(x,y,z)]];
 
   let currentPath = 0;
   for(let char of string){
@@ -234,7 +234,7 @@ function generatePoints3d(seed, xStart, yStart){
       // valid(char) just makes sure that the character is in the alphabet
       let rotate = THREE.Euler(degree, degree, degree, "XYZ");
       let addition = seed.extra[char];
-      let newPath = new Vector3(x + addition,y + addition,z + addition);
+      let newPath = new THREE.Vector3(x + addition,y + addition,z + addition);
       points[currentPath].push(newPath.applyEuler(rotate));
     } else if(char === "+" || char === "-"){
       // increase the rotation degree
@@ -250,7 +250,7 @@ function generatePoints3d(seed, xStart, yStart){
       degree = stack[0][3];
       stack.splice(0,1);
       currentPath += 1;
-      points.push([new Vector3(x,y,z)]);
+      points.push([new THREE.Vector3(x,y,z)]);
     }
   }
   return points;
