@@ -203,7 +203,7 @@ window.onload = function(){
         for(let i = 0; i < seedGroups.length; ++i){
             seedGroups[i].userData.iterations += 1;
             //call regenerate/reiterate/regrow function on seedGroups[i] here
-            nextIterate(seedGroups[i], seedGroups[i].userData.iterations); // updates the seedGroup's string
+            nextIterate(seedGroups[i].userData.seed, 1); // updates the seedGroup's string
             generatePts(seedGroups[i]);
         }
     }
