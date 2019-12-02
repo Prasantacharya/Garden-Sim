@@ -119,10 +119,9 @@ var seedBulbMaterial = new THREE.MeshPhongMaterial({
 
 //i have no idea what I'm doing here!
 const seedRules = {
-    "A":"AZ",
-    "B":"AV",
-    "V":"[A]"
-
+    "A":["AZ"],
+    "B":["AV"],
+    "V":["[A]"]
 };
 
 const seedExtraRules = {
@@ -204,14 +203,16 @@ window.onload = function(){
             seedGroups[i].userData.iterations += 1;
             //call regenerate/reiterate/regrow function on seedGroups[i] here
             nextIterate(seedGroups[i].userData.seed, 1); // updates the seedGroup's string
-            generatePoints3d(seedGroups[i].userData.seed, 0,0);
+            let t = generatePoints3d(seedGroups[i].userData.seed, 0,0);
+            console.log(seedGroups[i].userData.seed.getString());
         }
     }
 }
 
 // seed path generation here
 function nextIterate(seed, i){
-  return seed.updateString(makeString(seed, i));// changes the seed's string to be the i-th iteration
+  let t = seed.updateString(makeString(seed, i));
+  return t;// changes the seed's string to be the i-th iteration
 }
 
 // generates the points and the paths
@@ -232,7 +233,7 @@ function generatePoints3d(seed, xStart, yStart){
   for(let char of string){
     if(valid(char) && (char in seed.extra)){
       // valid(char) just makes sure that the character is in the alphabet
-      let rotate = THREE.Euler(degree, degree, degree, "XYZ");
+      let rotate = new THREE.Euler(degree, degree, degree, "XYZ");
       let addition = seed.extra[char];
       let newPath = new THREE.Vector3(x + addition,y + addition,z + addition);
       points[currentPath].push(newPath.applyEuler(rotate));
