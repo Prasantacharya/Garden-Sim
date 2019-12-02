@@ -119,15 +119,22 @@ var seedBulbMaterial = new THREE.MeshPhongMaterial({
 
 //i have no idea what I'm doing here!
 const seedRules = {
-    "A":["AZ"],
+    "A":["AW"],
     "B":["AV"],
-    "V":["[A]Z"]
+    "V":["+[A]W", "-[A]W"]
 };
 
 const seedExtraRules = {
-    "A":1,
-    "Z":1, //side lengths?
-    "+":0.523599 //radians??
+    "A":new THREE.Vector3(0,1,0),
+    "W":new THREE.Vector3(0,1,0), //side lengths?
+
+    //golden angles, +- -> x, */ -> y , () -> z
+    "+":new THREE.Vector3(0.3752458, 0, 0),
+    "-":new THREE.Vector3(-0.3752458, 0, 0),
+    "*":new THREE.Vector3(0, 0.3752458, 0),
+    "/":new THREE.Vector3(0, -0.3752458, 0),
+    "(":new THREE.Vector3(0, 0, 0.3752458),
+    ")":new THREE.Vector3(0, 0, -0.3752458)
 };
 
 
@@ -216,7 +223,7 @@ window.onload = function(){
             //add new meshes to group
             for(let j = 0; j < t.length; ++j){
                 let path = new THREE.CatmullRomCurve3(t[j]);
-                let geo = new THREE.TubeGeometry(path, 5, 0.5, 6, false);
+                let geo = new THREE.TubeGeometry(path, t[j].length*5, 0.5, 6, false);
                 let mesh = new THREE.Mesh(geo, torusMaterial);
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
@@ -251,7 +258,7 @@ function generatePoints3d(seed, xStart, yStart){
   let y = yStart;// starting y position
   let z = 0;
 
-  let degree = 0.0;
+  let degree = new THREE.Vector3(0,0,0);
   let stack = [];
   let points = [[new THREE.Vector3(x,y,z)]];
 
@@ -259,16 +266,19 @@ function generatePoints3d(seed, xStart, yStart){
   for(let char of string){
     if(valid(char) && (char in seed.extra)){
       // valid(char) just makes sure that the character is in the alphabet
-      let rotate = new THREE.Euler(degree, degree, degree, "XYZ");
+      let rotate = new THREE.Euler(degree.x, degree.y, degree.z, "XYZ");
       let addition = seed.extra[char];
-      x += addition;
-      y += addition;
-      z += addition;
+      x += addition.x;
+      y += addition.y;
+      z += addition.z;
       let newPath = new THREE.Vector3(x,y,z);
       points[currentPath].push(newPath.applyEuler(rotate));
-    } else if(char === "+" || char === "-"){
+    } else if(char === "+" || char === "-" || char === "*" || char === "/" || char === "(" || char === ")"){
       // increase the rotation degree
-      degree += seed.extra[char];
+      // degree += seed.extra[char];
+      degree.x += seed.extra[char].x;
+      degree.y += seed.extra[char].y;
+      degree.z += seed.extra[char].z;
     } else if(char === "["){
       // push it onto the stack
       stack.unshift([x,y,z,degree]);
