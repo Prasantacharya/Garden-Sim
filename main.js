@@ -123,7 +123,20 @@ const seedRules = {
     "B":["AV"],
     "C":["+WC"],
     "D":["-WD"],
-    "V":["+[A]W", "-[A]W"]
+    "S":["aW","aSW", "abcdeW"],
+    "V":["+[A]W", "-[A]W"],
+
+    //some helpers--converge to unit Y
+    "a":["W"],
+    "b":["a"],
+    "c":["b"],
+    "d":["c"],
+    "e":["d"],
+
+    //converge to rotation
+    "f":["+W"],
+    "g":["f"],
+    "h":["g"]
 };
 
 const seedExtraRules = {
