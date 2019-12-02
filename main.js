@@ -204,15 +204,14 @@ window.onload = function(){
             //call regenerate/reiterate/regrow function on seedGroups[i] here
             nextIterate(seedGroups[i].userData.seed, 1); // updates the seedGroup's string
             let t = generatePoints3d(seedGroups[i].userData.seed, 0,0);
-            console.log(seedGroups[i].userData.seed.getString());
+            console.log(t[0]);
         }
     }
 }
 
 // seed path generation here
 function nextIterate(seed, i){
-  let t = seed.updateString(makeString(seed, i));
-  return t;// changes the seed's string to be the i-th iteration
+  return seed.updateString(makeString(seed, i));// changes the seed's string to be the i-th iteration
 }
 
 // generates the points and the paths
@@ -235,7 +234,10 @@ function generatePoints3d(seed, xStart, yStart){
       // valid(char) just makes sure that the character is in the alphabet
       let rotate = new THREE.Euler(degree, degree, degree, "XYZ");
       let addition = seed.extra[char];
-      let newPath = new THREE.Vector3(x + addition,y + addition,z + addition);
+      x += addition;
+      y += addition;
+      z += addition;
+      let newPath = new THREE.Vector3(x,y,z);
       points[currentPath].push(newPath.applyEuler(rotate));
     } else if(char === "+" || char === "-"){
       // increase the rotation degree
@@ -244,7 +246,7 @@ function generatePoints3d(seed, xStart, yStart){
       // push it onto the stack
       stack.unshift([x,y,z,degree]);
     } else if(char === "]"){
-
+      // pops them off the stack
       x = stack[0][0];
       y = stack[0][1];
       z = stack[0][2];
