@@ -8,9 +8,9 @@
 const WIN_WIDTH = 800;
 const WIN_HEIGHT = 450;
 const VIEW_FOV = 75;
-const GROUND_SIZE = 200;
-const CAMERA_BOUNDS_X = 20;
-const CAMERA_BOUNDS_Z = 20;
+const GROUND_SIZE = 300;
+const CAMERA_BOUNDS_X = 90;
+const CAMERA_BOUNDS_Z = 90;
 
 //scene, camera, renderer, etc
 const scene = new THREE.Scene();
@@ -87,7 +87,7 @@ scene.add(axesHelper);
 //torusKnot for shadow debugging
 var torusGeometry = new THREE.TorusKnotGeometry(6, 1, 128, 16);
 var torusMaterial = new THREE.MeshPhongMaterial({
-    side: THREE.DoubleSide,
+    side: THREE.FrontSide,
     color: 0xffff00,
     reflectivity: 0.8,
     shininess: 70
@@ -221,6 +221,15 @@ window.onload = function(){
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
                 seedGroups[i].add(mesh);
+                
+                geo = new THREE.SphereGeometry(0.5, 8, 8);
+                mesh = new THREE.Mesh(geo, torusMaterial);
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                seedGroups[i].add(mesh);
+                mesh.position.x = t[j][t[j].length-1].x;
+                mesh.position.y = t[j][t[j].length-1].y;
+                mesh.position.z = t[j][t[j].length-1].z;
             }
         }
     }
