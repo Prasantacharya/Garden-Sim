@@ -204,7 +204,7 @@ window.onload = function(){
             seedGroups[i].userData.iterations += 1;
             //call regenerate/reiterate/regrow function on seedGroups[i] here
             nextIterate(seedGroups[i].userData.seed, 1); // updates the seedGroup's string
-            generatePts(seedGroups[i]);
+            generatePoints3d(seedGroups[i].userData.seed, 0,0);
         }
     }
 }
