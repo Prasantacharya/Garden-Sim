@@ -121,7 +121,7 @@ var seedBulbMaterial = new THREE.MeshPhongMaterial({
 const seedRules = {
     "A":["AZ"],
     "B":["AV"],
-    "V":["[A]"]
+    "V":["[A]Z"]
 };
 
 const seedExtraRules = {
@@ -204,13 +204,31 @@ window.onload = function(){
             //call regenerate/reiterate/regrow function on seedGroups[i] here
             nextIterate(seedGroups[i].userData.seed, 1); // updates the seedGroup's string
             let t = generatePoints3d(seedGroups[i].userData.seed, 0,0);
-            console.log(t[0]);
+            console.log(t);
+
+            //remove old meshes from group
+            // type error here
+            for(let j = seedGroups[i].children.length; j > 0; --j){
+                seedGroups[i].children[j].geometry.dispose();
+                seedGroups[i].remove(seedGroups[i].children[j]);
+            }
+
+            //add new meshes to group
+            // for(let j = 0; j < t.length; ++j){
+            //     let path = new THREE.CatmullRomCurve3(t[j]);
+            //     let geo = new THREE.TubeGeometry(path, 5, 0.5, 6, false);
+            //     let mesh = new THREE.Mesh(geo, torusMaterial);
+            //     mesh.castShadow = true;
+            //     mesh.receiveShadow = true;
+            //     seedGroups[i].add(mesh);
+            // }
         }
     }
 }
 
 // seed path generation here
 function nextIterate(seed, i){
+    console.log(makeString(seed, i));
   return seed.updateString(makeString(seed, i));// changes the seed's string to be the i-th iteration
 }
 
