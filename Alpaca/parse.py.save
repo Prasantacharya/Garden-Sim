@@ -1,0 +1,76 @@
+'''
+ex: A
+ex: (A) & (B)
+ex: ((A) & (B)) | (C)
+ex: (~A) or ~A
+'''
+string = "(~A)"
+print("String:", string)
+raw = list(string) # first breaks up the string into
+
+operation = {"&", "|", ">", "="} # symbols that need two symbols next to them
+# symbols that only need one: ~
+# symbols that need to be completed: ( )
+
+def next(raw, current):
+	if current < len(raw) - 1:
+		return(True, raw[current + 1])
+	return(False, raw[current])
+
+paren = {"(": 0, ")":0} # keeps track of the number of parenthisis
+prev = "" #keeps track of the previous item
+operations = False # takes care of the special case where
+
+invalid = False
+start = True
+# assume that the inputs will have spaces next to them
+for symbol in raw:
+	if symbol == " ":
+		continue
+
+	if symbol == "(":
+		if prev == :
+			invalid = True
+			break
+		paren[symbol] += 1
+		prev = symbol
+
+	elif symbol == ")":
+		if prev == "(" or prev == ")" or prev == "op" or prev == "~":
+			invalid = True
+			break
+		paren[symbol] += 1
+		prev = symbol
+
+	elif symbol in operation: # operation case
+		if prev == ")":
+			# if you come across anything that isn't a
+			operations = True
+			# make sure that the symbolFlag are correct before continuing
+			prev = "op"
+		else:
+			invalid = True
+			break
+
+	elif symbol == "~":
+		if prev == "op":
+			invalid = True
+			break
+		operations = True
+		prev = symbol
+		# make sure the next symbol
+
+	else:
+		prev = "sy"
+		# symbol must be a letter then
+		# will deal with additional symbols later
+	index += 1
+
+if invalid:
+	print("Invalid string")
+elif (paren["("] > 0 or paren[")"] > 0) and operations == False:
+    print("Invalid string: single element cannot be in parenthsis")
+elif paren[")"] is not paren["("]:
+    print("Invalid string: Mismatching parenthsis")
+else:
+	print("Valid string")

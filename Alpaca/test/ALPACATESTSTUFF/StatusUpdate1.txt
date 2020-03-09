@@ -1,0 +1,16 @@
+Prasant Acharya		Status Update: 9/20
+----------------------------------------
+Last Week:
+
+Last week I refreshed on python, and got familiar with the framework
+the project would be using: kivy. I spent alot of time looking at documentation for kivy
+before jumping into writing some code for the project. I also laid out a rough timeline 
+for when certain featues should be finished by. I then divided the team into more efficient
+groups and assigned each group a feature as well as a rough deadline for each group. I also 
+spent some time helping others in the group to install and get familiar with kivy.
+
+This Week:
+I started work on the project, creating a rough gui with the other members
+on my team. We also came up with some ideas for how the gui should look as
+well as storyboarding some animations we would use for the project. I am also
+currently working a better homepage for the gui.
