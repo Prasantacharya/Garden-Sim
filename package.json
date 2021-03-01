@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/Prasantacharya/Garden-Sim#readme",
   "dependencies": {
-    "three": "^0.110.0"
+    "three": "^0.125.0"
   }
 }
